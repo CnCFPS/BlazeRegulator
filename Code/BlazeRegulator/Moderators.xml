@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Moderators>
+	<AccessLevels>
+		<Level ID="6" Name="Server Owner" IRCPrefix="~" IngamePrefix="~" />
+		<Level ID="5" Name="Server Administrator" IRCPrefix="&amp;" IngamePrefix="&amp;" />
+		<Level ID="4" Name="Full Moderator" IRCPrefix="@" IngamePrefix="@" />
+		<Level ID="3" Name="Half Moderator" IRCPrefix="%" IngamePrefix="%" />
+		<Level ID="2" Name="Temporary Moderator" IngamePrefix="+" IsPermanent="False" />
+		<Level ID="1" Name="Normal" IRCAccess="+" ShowInModList="False" />
+	</AccessLevels>
+
+	<Moderators>
+		<Moderator Name="Genesis2001" Level="6">
+			<Alias IRCOnly="True" Name="Genesis" />
+			<Alias Name="Genesis2" />
+			<Alias Name="MPFGenesis" />
+
+			<Authorization>
+				<Post>
+					<Execute Target="game/renegade" Command="setaccesslevel %id% 6" />
+					<!--<Execute Target="game/renegadex" Command="say %player% is the server owner." />-->
+				</Post>
+			</Authorization>
+		</Moderator>
+
+		<Moderator Name="Lone0001" Level="5">
+			<Alias IRCOnly="True" Name="Lone" />
+			<Alias IRCOnly="True" Name="LWB0T" Level="3" />
+		</Moderator>
+		<Moderator Name="GoCTaylor" Level="3">
+			<Alias Name="Cronus" Level="4" IRCOnly="True" />
+		</Moderator>
+		<Moderator Name="MPFzunnie" Level="3">
+			<Alias Name="zunnie" IRCOnly="True"  />
+		</Moderator>
+	</Moderators>
+</Moderators>
