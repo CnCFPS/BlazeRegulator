@@ -16,7 +16,8 @@ namespace BlazeRegulator.Core
 		[XmlElement("IRC")]
 		public IrcSettings IrcConfig { get; set; }
 
-
+		[XmlElement("Remote")]
+		public RemoteSettings RemoteConfig { get; set; }
 
 		#region Irc Types
 
@@ -102,6 +103,48 @@ namespace BlazeRegulator.Core
 		}
 
 		#endregion
+
+		#endregion
+
+		#region Nested type: RemoteSettings
+
+		public class RemoteSettings
+		{
+			[XmlElement("RenRem")]
+			public RenRemSettings RenRemConfig { get; set; }
+
+			[XmlElement("Log")]
+			public RemoteLogSettings LogConfig { get; set; }
+		}
+
+		#endregion
+
+		#region Nested type: RenRemSettings
+
+		public class RenRemSettings
+		{
+			[XmlAttribute("Host")]
+			public String Host { get; set; }
+
+			[XmlAttribute("Port")]
+			public int Port { get; set; }
+
+			[XmlAttribute("Password")]
+			public String Password { get; set; }
+		}
+
+		#endregion
+
+		#region Nested type: RemoteLogSettings
+
+		public class RemoteLogSettings
+		{
+			[XmlAttribute("Host")]
+			public String Host { get; set; }
+
+			[XmlAttribute("Port")]
+			public int Port { get; set; }
+		}
 
 		#endregion
 	}

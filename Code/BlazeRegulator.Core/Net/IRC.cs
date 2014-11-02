@@ -4,7 +4,7 @@
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-namespace BlazeRegulator.Core
+namespace BlazeRegulator.Core.Net
 {
 	using System;
 	using System.Linq;
@@ -141,7 +141,7 @@ namespace BlazeRegulator.Core
 				}
 				else if (IsGameChannel(e.Channel))
 				{
-					await client.SendNow("PRIVMSG {0} :BlazeRegulator v4.5 now online. Type !help for a list of commands.", e.Channel);
+					await client.SendNow("PRIVMSG {0} :BlazeRegulator 4.5 now online. Type !help for a list of commands.", e.Channel);
 				}
 			}
 		}
