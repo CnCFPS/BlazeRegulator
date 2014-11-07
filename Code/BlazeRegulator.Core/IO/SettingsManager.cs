@@ -17,29 +17,29 @@ namespace BlazeRegulator.Core.IO
 		{
 		}
 
-		public static T LoadSettingsFrom<T>(String path)
+		public static T LoadSettingsFrom<T>(String uri)
 		{
-			//CheckPath(ref path);
+			//CheckPath(ref uri);
 
 			var serializer = new XmlSerializer(typeof (T));
-			using (Stream s = new FileStream(path, FileMode.Open, FileAccess.Read))
+			using (Stream s = new FileStream(uri, FileMode.Open, FileAccess.Read))
 			{
-				Log.Instance.WriteLine("Loading settings from: {0}", path);
+				Log.Instance.WriteLine("Loading settings from: {0}", uri);
 				return (T)serializer.Deserialize(s);
 			}
 		}
 
-		public static void SaveSettingsTo<T>(T settings, String path)
+		public static void SaveSettingsTo<T>(T settings, String uri)
 		{
-			//CheckPath(ref path);
+			//CheckPath(ref uri);
 
 			var serializer = new XmlSerializer(typeof (T));
 			var xmlSettings = new XmlWriterSettings {Indent = true, OmitXmlDeclaration = true};
 
-			using (Stream s = new FileStream(path, FileMode.Truncate, FileAccess.Write))
+			using (Stream s = new FileStream(uri, FileMode.Truncate, FileAccess.Write))
 			using (XmlWriter writer = XmlWriter.Create(s, xmlSettings))
 			{
-				Log.Instance.WriteLine("Saving settings to: {0}", path);
+				Log.Instance.WriteLine("Saving settings to: {0}", uri);
 
 				serializer.Serialize(writer, settings);
 			}

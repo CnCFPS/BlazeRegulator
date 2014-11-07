@@ -11,6 +11,7 @@ namespace BlazeRegulator.Core.Net
 	using System.Threading.Tasks;
 	using Atlantis.Linq;
 	using Atlantis.Net.Irc;
+	using IO;
 
 	// ReSharper disable once InconsistentNaming
 	public class IRC
@@ -42,7 +43,7 @@ namespace BlazeRegulator.Core.Net
 			String message = String.Format(format, args);
 			var value = EnumEx.GetValueFromDescription<Settings.IrcChannelType>(channel);
 
-			foreach (var item in settings.IrcConfig.Channels.Where(x => x.Type == value))
+			foreach (var item in settings.IrcConfig.Channels.Where(x => value.HasFlag(x.Type)))
 			{
 				await client.SendNow("PRIVMSG {0} :{1}", item.Name, message);
 			}
@@ -50,6 +51,7 @@ namespace BlazeRegulator.Core.Net
 
 		public void Initialize(Settings config)
 		{
+			Log.Instance.WriteLine("Initializing IRC client...");
 			settings = config;
 
 			client.HostName = settings.IrcConfig.Server;
@@ -81,6 +83,7 @@ namespace BlazeRegulator.Core.Net
 
 		public void Shutdown()
 		{
+			Log.Instance.WriteLine("Closing IRC connection.");
 			client.Stop(String.Format("BlazeRegulator v{0} shutting down.", "4.5"));
 		}
 
@@ -91,6 +94,7 @@ namespace BlazeRegulator.Core.Net
 				return;
 			}
 
+			Log.Instance.WriteLine("Connecting to IRC... {0}:{1}", client.HostName, client.Port);
 			await client.Start();
 		}
 
@@ -121,12 +125,12 @@ namespace BlazeRegulator.Core.Net
 					await Task.Factory.StartNew(async () =>
 					                                  {
 						                                  await Task.Delay((int)delay * 1000);
-						                                  client.Send(exec);
+						                                  await client.SendNow(exec);
 					                                  });
 				}
 				else
 				{
-					client.Send(exec);
+					await client.SendNow(exec);
 				}
 			}
 		}
@@ -137,7 +141,7 @@ namespace BlazeRegulator.Core.Net
 			{
 				if (!IsValidChannel(e.Channel))
 				{
-					client.Send("PART {0} :Not in my channel list.", e.Channel);
+					await client.SendNow("PART {0} :Not in my channel list.", e.Channel);
 				}
 				else if (IsGameChannel(e.Channel))
 				{

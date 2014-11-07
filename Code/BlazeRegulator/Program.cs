@@ -9,6 +9,7 @@ namespace BlazeRegulator
 	using System;
 	using System.Threading;
 	using Core;
+	using Core.Data;
 	using Core.IO;
 	using Core.Net;
 
@@ -19,18 +20,25 @@ namespace BlazeRegulator
 		// ReSharper disable once FunctionNeverReturns
 		public static void Main(string[] args)
 		{
+			Console.Title = String.Format("BlazeRegulator v{0} by Genesis2001", Bot.Version);
 			settings = SettingsManager.LoadSettingsFrom<Settings>("Settings.xml");
 
-			Log.Instance.WriteLine("Initializing IRC client...");
-			IRC.Instance.Initialize(settings);
+			Game.SetTeamHandler(new RenegadeTeamHandler());
 
-			Log.Instance.WriteLine("Connecting to IRC... {0}:{1}", settings.IrcConfig.Server, settings.IrcConfig.Port);
+			Game.Events.TestEvent += (s, e) => Console.WriteLine("[RECV] {0}", e.Message);
+			//Game.Events.ChatEvent += (s, e) => Console.WriteLine("{0}: {1}", e.Name, e.Message);
+
+			IRC.Instance.Initialize(settings);
 			IRC.Instance.Start();
 
 			// TODO: Initialize renlog monitoring.
+			MainLogHandler.Instance.Initialize(settings);
+			MainLogHandler.Instance.Start();
+
+			Thread.Sleep(1000);
 
 			Remote.Initialize(settings);
-			Remote.BotMessage("BlazeRegulator {0} starting up. Type !help for a list of commands.", "4.5");
+			Remote.BotMessage("BlazeRegulator {0} starting up. Type !help for a list of commands.", Bot.Version);
 
 			Console.CancelKeyPress += BotShutdown;
 			while (true)
@@ -41,12 +49,9 @@ namespace BlazeRegulator
 
 		private static void BotShutdown(object sender, ConsoleCancelEventArgs e)
 		{
-			Remote.BotMessage("BlazeRegulator {0} shutting down.", "4.5");
-			Log.Instance.WriteLine("Closing IRC connection.");
-			IRC.Instance.Shutdown();
-
-			Log.Instance.WriteLine("Saving settings to Settings.xml");
+			Remote.BotMessage("BlazeRegulator is restarting. Be good while it's gone.", Bot.Version);
 			SettingsManager.SaveSettingsTo(settings, "Settings.xml");
+			IRC.Instance.Shutdown();
 		}
 	}
 }

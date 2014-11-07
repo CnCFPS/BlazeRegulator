@@ -13,14 +13,16 @@ namespace BlazeRegulator.Core.Net
 
 	// ReSharper disable PrivateFieldCanBeConvertedToLocalVariable
 	// ReSharper disable InconsistentNaming
+	// ReSharper disable FieldCanBeMadeReadOnly.Local
+
 	/// <summary>
     /// A renegade remote
     /// </summary>
 	internal class RenRemComm : IDisposable
-    { // 
+    { // Credit goes to @aca20031 for this.
         private String _szHost;
 		private int _iPort;
-        private UdpClient _udpClient = null;
+        private UdpClient _udpClient;
         private String _szPassword;
         private byte[] _abPassword;
         private TimeSpan _tsPasswordInterval;
@@ -169,6 +171,7 @@ namespace BlazeRegulator.Core.Net
         }
     }
 
+	// ReSharper restore FieldCanBeMadeReadOnly.Local
 	// ReSharper restore InconsistentNaming
 	// ReSharper restore PrivateFieldCanBeConvertedToLocalVariable
 }

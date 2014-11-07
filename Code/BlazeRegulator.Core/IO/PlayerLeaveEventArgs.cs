@@ -1,19 +1,17 @@
 // -----------------------------------------------------------------------------
-//  <copyright file="Player.cs" company="Zack Loveless">
+//  <copyright file="PlayerLeaveEventArgs.cs" company="Zack Loveless">
 //      Copyright (c) Zack Loveless.  All rights reserved.
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-namespace BlazeRegulator.Core
+namespace BlazeRegulator.Core.IO
 {
-	using System;
+	using Data;
 
-	public class Player
+	public class PlayerLeaveEventArgs : PlayerJoinEventArgs
 	{
-		public int Id { get; set; }
-
-		public String Name { get; set; }
-
-		public int Team { get; set; }
+		public PlayerLeaveEventArgs(Player player) : base(player)
+		{
+		}
 	}
 }

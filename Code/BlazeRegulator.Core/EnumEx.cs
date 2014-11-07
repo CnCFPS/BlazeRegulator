@@ -31,7 +31,7 @@ namespace BlazeRegulator.Core
 					return (T)field.GetValue(null);
 				}
 
-				if (field.Name == description)
+				if (field.Name.EqualsIgnoreCase(description))
 				{
 					return (T)field.GetValue(null);
 				}

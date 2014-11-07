@@ -59,6 +59,9 @@
     <Content Include="Commands.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Defaults\Settings.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Moderators.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

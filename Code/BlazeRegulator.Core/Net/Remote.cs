@@ -7,7 +7,11 @@
 namespace BlazeRegulator.Core.Net
 {
 	using System;
+	using System.Diagnostics;
 
+	/// <summary>
+	/// High-level class representing the Renegade remote console.
+	/// </summary>
 	public static class Remote
 	{
 		private static bool initialized;
@@ -27,7 +31,7 @@ namespace BlazeRegulator.Core.Net
 		}
 
 		/// <summary>
-		/// Executes the specified command to the server.
+		/// Executes the specified command on the server.
 		/// </summary>
 		/// <param name="format"></param>
 		/// <param name="args"></param>
@@ -45,6 +49,9 @@ namespace BlazeRegulator.Core.Net
 		public static void Initialize(Settings settings)
 		{
 			if (initialized || comm != null) return;
+
+			Debug.Assert(settings.RemoteConfig != null, "No Remote configuration found!");
+			Debug.Assert(settings.RemoteConfig.RenRemConfig != null, "No RenRem configuration found!");
 
 			var info = settings.RemoteConfig.RenRemConfig;
 			comm = new RenRemComm(info.Host, info.Port, info.Password, new TimeSpan(0, 0, 2, 0));
