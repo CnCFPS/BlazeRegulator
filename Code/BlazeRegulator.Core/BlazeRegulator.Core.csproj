@@ -50,12 +50,12 @@
     <Compile Include="Game.cs" />
     <Compile Include="GameEventManager.cs" />
     <Compile Include="Data\ITeamHandler.cs" />
-    <Compile Include="IO\ChatEventArgs.cs" />
+    <Compile Include="ChatEventArgs.cs" />
     <Compile Include="IO\Log.cs" />
     <Compile Include="IO\MainLogHandler.cs" />
-    <Compile Include="IO\PlayerJoinEventArgs.cs" />
-    <Compile Include="IO\PlayerLeaveEventArgs.cs" />
-    <Compile Include="IO\PlayerTeamChangedEventArgs.cs" />
+    <Compile Include="PlayerJoinEventArgs.cs" />
+    <Compile Include="PlayerLeaveEventArgs.cs" />
+    <Compile Include="PlayerTeamChangedEventArgs.cs" />
     <Compile Include="Linq\EventHelpers.cs" />
     <Compile Include="Net\RenLogClient.cs">
       <SubType>Code</SubType>

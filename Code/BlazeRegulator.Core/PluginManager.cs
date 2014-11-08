@@ -10,6 +10,7 @@ namespace BlazeRegulator.Core
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
+    using System.Diagnostics;
     using System.Linq;
     using IO;
     using Extensibility;
@@ -25,14 +26,37 @@ namespace BlazeRegulator.Core
         private AggregateCatalog core;
         private readonly IDictionary<String, DirectoryCatalog> loaded;
 
-        [ImportMany(typeof(Plugin), AllowRecomposition = true)]
-        private List<Lazy<Plugin>> plugins;
+        [ImportMany(contractName: "Plugin", contractType: typeof (Plugin), AllowRecomposition = true)] private IEnumerable<Lazy<Plugin>> plugins;
 
         #region Methods
+
+        private void Compose()
+        {
+            Debug.Assert(container != null, "Null container when PluginManager::Compose was called.");
+
+            container.ComposeParts(this);
+            foreach (var item in plugins)
+            {
+                Load(item.Value);
+            }
+        }
 
         public IEnumerable<Plugin> GetPlugins(Func<Plugin, bool> predicate)
         {
             return plugins.Where(x => x.IsValueCreated).Select(x => x.Value).Where(predicate);
+        }
+
+        private void InitializeContainer()
+        {
+            if (core == null)
+            {
+                core = new AggregateCatalog();
+            }
+
+            if (container == null)
+            {
+                container = new CompositionContainer(core, CompositionOptions.IsThreadSafe);
+            }
         }
 
         /// <summary>
@@ -63,15 +87,7 @@ namespace BlazeRegulator.Core
         /// <param name="searchPattern"></param>
         public void LoadDirectory(String directory, String searchPattern = "*.dll")
         {
-            if (core == null)
-            {
-                core = new AggregateCatalog();
-            }
-
-            if (container == null)
-            {
-                container = new CompositionContainer(core, CompositionOptions.IsThreadSafe);
-            }
+            InitializeContainer();
 
             DirectoryCatalog catalog;
             if (!loaded.TryGetValue(directory, out catalog))
@@ -82,16 +98,17 @@ namespace BlazeRegulator.Core
             }
 
             catalog.Refresh();
+            Compose();
         }
 
         public void UnloadAll()
         {
-            if (plugins != null && plugins.Count > 0)
+            var local = plugins.ToArray();
+            if (local.Length == 0) return;
+
+            foreach (var item in local.Where(x => x.IsValueCreated))
             {
-                foreach (var item in plugins.Where(x => x.IsValueCreated).Select(x => x.Value))
-                {
-                    Unload(item);
-                }
+                Unload(item.Value);
             }
         }
 

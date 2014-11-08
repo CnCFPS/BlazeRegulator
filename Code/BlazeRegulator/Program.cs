@@ -37,13 +37,14 @@ namespace BlazeRegulator
 //			IRC.Instance.Initialize(settings);
 //			IRC.Instance.Start();
 
+            /*
 			MainLogHandler.Instance.Initialize(settings);
 			MainLogHandler.Instance.Start();
 
 			Thread.Sleep(1000);
 
 			Remote.Initialize(settings);
-			Remote.BotMessage("BlazeRegulator {0} starting up. Type !help for a list of commands.", Bot.Version);
+			Remote.BotMessage("BlazeRegulator {0} starting up. Type !help for a list of commands.", Bot.Version); */
 
 			Console.CancelKeyPress += BotShutdown;
 			while (true)

@@ -7,8 +7,9 @@
 namespace Administration
 {
 	using BlazeRegulator.Core.Extensibility;
+	using BlazeRegulator.Core.IO;
 
-	public class AdministrationPlugin : Plugin
+    public class AdministrationPlugin : Plugin
 	{
 		#region Overrides of Plugin
 
@@ -32,7 +33,29 @@ namespace Administration
 			get { return "1.0"; }
 		}
 
-		public override PluginType Type
+	    /// <summary>
+	    /// Called when the plugin loads.
+	    /// </summary>
+	    /// <returns></returns>
+	    public override bool Initialize()
+	    {
+	        Log.Instance.WriteLine("AdminPlugin loaded.");
+
+	        return true;
+	    }
+
+	    /// <summary>
+	    /// Called when the plugin unloads.
+	    /// </summary>
+	    /// <returns></returns>
+	    public override bool Unload()
+	    {
+	        Log.Instance.WriteLine("AdminPlugin unloaded.");
+
+	        return true;
+	    }
+
+	    public override PluginType Type
 		{
 			get { return PluginType.VENDOR; }
 		}
