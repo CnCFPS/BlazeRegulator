@@ -4,11 +4,11 @@
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-namespace BlazeRegulator.Core.IO
+namespace BlazeRegulator.Core
 {
-	using System;
+    using System;
 
-	public class ChatEventArgs : EventArgs
+    public class ChatEventArgs : EventArgs
 	{
 		public ChatEventArgs(String name, String message, ChatType type)
 		{

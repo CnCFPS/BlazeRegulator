@@ -4,12 +4,12 @@
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-namespace BlazeRegulator.Core.IO
+namespace BlazeRegulator.Core
 {
-	using System;
-	using Data;
+    using System;
+    using Data;
 
-	public class PlayerTeamChangedEventArgs : EventArgs
+    public class PlayerTeamChangedEventArgs : EventArgs
 	{
 		public PlayerTeamChangedEventArgs(Player player, int oldTeam, int newTeam)
 		{

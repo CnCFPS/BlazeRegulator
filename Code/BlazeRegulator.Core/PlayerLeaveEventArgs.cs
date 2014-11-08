@@ -4,11 +4,11 @@
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-namespace BlazeRegulator.Core.IO
+namespace BlazeRegulator.Core
 {
-	using Data;
+    using Data;
 
-	public class PlayerLeaveEventArgs : PlayerJoinEventArgs
+    public class PlayerLeaveEventArgs : PlayerJoinEventArgs
 	{
 		public PlayerLeaveEventArgs(Player player) : base(player)
 		{

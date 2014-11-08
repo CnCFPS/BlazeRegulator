@@ -4,12 +4,12 @@
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-namespace BlazeRegulator.Core.IO
+namespace BlazeRegulator.Core
 {
-	using System;
-	using Data;
+    using System;
+    using Data;
 
-	public class PlayerJoinEventArgs : EventArgs
+    public class PlayerJoinEventArgs : EventArgs
 	{
 		public PlayerJoinEventArgs(Player player)
 		{
