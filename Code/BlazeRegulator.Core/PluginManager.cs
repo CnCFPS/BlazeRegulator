@@ -77,7 +77,7 @@ namespace BlazeRegulator.Core
                 plugin.Rehash();
             }
 
-            Log.Instance.WriteLine(ret ? "Successfully loaded plugin {0}" : "Unable to load plugin {0}", plugin.ShortName);
+            Log.Instance.WriteLine(ret ? "Successfully loaded: {0}" : "Unable to load: {0}", plugin.Name);
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace BlazeRegulator.Core
             }
 
             bool ret = plugin.Unload();
-            Log.Instance.WriteLine(ret ? "Successfully unloaded plugin {0}" : "Unable to unload plugin {0}", plugin.ShortName);
+            Log.Instance.WriteLine(ret ? "Successfully unloaded: {0}" : "Unable to unload: {0}", plugin.Name);
         }
 
         #endregion
