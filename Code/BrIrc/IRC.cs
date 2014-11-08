@@ -95,6 +95,7 @@ namespace BrIrc
 
 		private async void OnConnect(object sender, EventArgs e)
 		{
+		    Log.Instance.WriteLine("Connected!");
 			foreach (var item in settings.Channels)
 			{
 				if (item.PasswordSpecified)

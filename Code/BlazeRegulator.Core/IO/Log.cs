@@ -26,6 +26,12 @@ namespace BlazeRegulator.Core.IO
 			return DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 		}
 
+	    public void Write(String format, params object[] args)
+	    {
+            String message = String.Format(format, args);
+            Console.Write("{0} {1}", GetDateTime(), message);
+	    }
+
 		public void WriteLine(String format, params object[] args)
 		{
 			String message = String.Format(format, args);
