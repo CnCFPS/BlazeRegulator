@@ -4,7 +4,7 @@
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-namespace BlazeRegulator.Core.Plugin
+namespace BlazeRegulator.Core.Extensibility
 {
 	public enum PluginType
 	{

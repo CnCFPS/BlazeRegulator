@@ -1,14 +1,15 @@
 ﻿// -----------------------------------------------------------------------------
-//  <copyright file="AdministrationPlugin.cs" company="Zack Loveless">
+//  <copyright file="TestPlugin.cs" company="Zack Loveless">
 //      Copyright (c) Zack Loveless.  All rights reserved.
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-namespace Administration
+namespace TestPlugin
 {
 	using BlazeRegulator.Core.Extensibility;
+	using BlazeRegulator.Core.IO;
 
-	public class AdministrationPlugin : Plugin
+	public class TestPlugin : Plugin
 	{
 		#region Overrides of Plugin
 
@@ -19,12 +20,12 @@ namespace Administration
 
 		public override string Name
 		{
-			get { return "BlazeRegulator Administration Plugin"; }
+			get { return "A Test Plugin for BlazeRegulator"; }
 		}
 
 		public override string ShortName
 		{
-			get { return "AdminPlugin"; }
+			get { return "TestPlugin"; }
 		}
 
 		public override string Version
@@ -32,9 +33,18 @@ namespace Administration
 			get { return "1.0"; }
 		}
 
-		public override PluginType Type
+		public override bool Initialize()
 		{
-			get { return PluginType.VENDOR; }
+			Log.Instance.WriteLine("Test plugin loaded");
+
+			return true;
+		}
+
+		public override bool Unload()
+		{
+			Log.Instance.WriteLine("Test plugin unloaded.");
+
+			return true;
 		}
 
 		#endregion

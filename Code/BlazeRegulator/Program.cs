@@ -25,6 +25,8 @@ namespace BlazeRegulator
 
 			Game.SetTeamHandler(new RenegadeTeamHandler());
 
+			Bot.Plugins.LoadDirectory("Plugins");
+			
 			/*
 			//Game.Events.TestEvent += (s, e) => Console.WriteLine("[RECV] {0}", e.Message);
 			Game.Events.ChatEvent +=
@@ -32,10 +34,9 @@ namespace BlazeRegulator
 					Console.WriteLine("[CHAT] (IsTeamChat={2},IsHostChat={3}) {0}: {1}", e.Name, e.Message, e.IsTeamChat, e.IsHostChat);
 			*/
 
-			IRC.Instance.Initialize(settings);
-			IRC.Instance.Start();
+//			IRC.Instance.Initialize(settings);
+//			IRC.Instance.Start();
 
-			// TODO: Initialize renlog monitoring.
 			MainLogHandler.Instance.Initialize(settings);
 			MainLogHandler.Instance.Start();
 
@@ -54,8 +55,9 @@ namespace BlazeRegulator
 		private static void BotShutdown(object sender, ConsoleCancelEventArgs e)
 		{
 			Remote.BotMessage("BlazeRegulator is restarting. Be good while it's gone.");
+		    Bot.Plugins.UnloadAll();
 			SettingsManager.SaveSettingsTo(settings, "Settings.xml");
-			IRC.Instance.Shutdown();
+			//IRC.Instance.Shutdown();
 		}
 	}
 }
