@@ -24,5 +24,10 @@ namespace BlazeRegulator.Core
 		{
 			get { return "2.0"; }
 		}
+
+	    public static int VersionInt32
+	    { // 2.0.0.0 => 2000
+	        get { return 2000; }
+	    }
 	}
 }

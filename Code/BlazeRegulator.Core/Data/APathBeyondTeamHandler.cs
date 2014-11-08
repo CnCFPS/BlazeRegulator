@@ -36,13 +36,13 @@ namespace BlazeRegulator.Core.Data
 			switch (team)
 			{
 				case 0:
-					return (int)ColorCode.Red;
+			        return (int)ColorCode.Red;
 
 				case 1:
-					return (int)ColorCode.Cyan;
+			        return (int)ColorCode.Teal;
 
 				default:
-					return (int)ColorCode.LightGray;
+			        return (int)ColorCode.LightGray;
 			}
 		}
 

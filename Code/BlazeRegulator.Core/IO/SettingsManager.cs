@@ -7,39 +7,46 @@
 namespace BlazeRegulator.Core.IO
 {
 	using System;
+	using System.Diagnostics;
 	using System.IO;
+	using System.Reflection;
 	using System.Xml;
 	using System.Xml.Serialization;
 
 	public static class SettingsManager
 	{
-		private static void CheckPath(ref String path)
+		private static void FileToFullUri(ref String relativeUri)
 		{
+		    var asm = Assembly.GetEntryAssembly();
+		    var dir = Path.GetDirectoryName(asm.Location);
+            
+		    Debug.Assert(dir != null, "Null base directory.");
+            relativeUri = Path.Combine(dir, "Config", relativeUri);
 		}
 
-		public static T LoadSettingsFrom<T>(String uri)
+		public static T LoadSettingsFrom<T>(String file)
 		{
-			//CheckPath(ref uri);
+			FileToFullUri(ref file);
 
 			var serializer = new XmlSerializer(typeof (T));
-			using (Stream s = new FileStream(uri, FileMode.Open, FileAccess.Read))
+			using (Stream s = new FileStream(file, FileMode.Open, FileAccess.Read))
 			{
-				Log.Instance.WriteLine("Loading settings from: {0}", uri);
+			    Log.Instance.WriteLine("Loading settings from: {0}", Path.GetFileName(file));
 				return (T)serializer.Deserialize(s);
 			}
 		}
 
-		public static void SaveSettingsTo<T>(T settings, String uri)
+		public static void SaveSettingsTo<T>(T settings, String file)
 		{
-			//CheckPath(ref uri);
+		    FileToFullUri(ref file);
 
 			var serializer = new XmlSerializer(typeof (T));
 			var xmlSettings = new XmlWriterSettings {Indent = true, OmitXmlDeclaration = true};
 
-			using (Stream s = new FileStream(uri, FileMode.Truncate, FileAccess.Write))
+			using (Stream s = new FileStream(file, FileMode.Truncate, FileAccess.Write))
 			using (XmlWriter writer = XmlWriter.Create(s, xmlSettings))
 			{
-				Log.Instance.WriteLine("Saving settings to: {0}", uri);
+			    Log.Instance.WriteLine("Saving settings to: {0}", Path.GetFileName(file));
 
 				serializer.Serialize(writer, settings);
 			}

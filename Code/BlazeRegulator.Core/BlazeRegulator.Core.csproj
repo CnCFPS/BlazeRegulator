@@ -30,11 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Atlantis">
+    <Reference Include="Atlantis, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Atlantis.4.1.0-alpha\lib\net451\Atlantis.dll</HintPath>
-    </Reference>
-    <Reference Include="Atlantis.Net.Irc">
-      <HintPath>..\packages\Atlantis.Net.Irc.4.1.0-alpha\lib\net451\Atlantis.Net.Irc.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -45,6 +43,8 @@
   <ItemGroup>
     <Compile Include="Bot.cs" />
     <Compile Include="Data\APathBeyondTeamHandler.cs" />
+    <Compile Include="Data\ColorCode.cs" />
+    <Compile Include="Data\ControlCode.cs" />
     <Compile Include="Data\RenegadeTeamHandler.cs" />
     <Compile Include="EnumEx.cs" />
     <Compile Include="Game.cs" />
@@ -62,7 +62,6 @@
     </Compile>
     <Compile Include="Net\RenRemComm.cs" />
     <Compile Include="Net\Remote.cs" />
-    <Compile Include="Net\IRC.cs" />
     <Compile Include="Data\Player.cs" />
     <Compile Include="PluginManager.cs" />
     <Compile Include="Extensibility\Plugin.cs" />
