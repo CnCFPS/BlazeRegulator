@@ -145,11 +145,11 @@ namespace BlazeRegulator.Core.IO
 
 		private async void OnRenLog(String line)
 		{
-			Game.Events.Raise(this, new TestEventArgs(line));
+			//Game.Events.Raise(this, new TestEventArgs(line));
 
 			Match m;
 			if (line.Matches(@"[^ ]+:.*"))
-			{ // TODO: parse dis for chat.
+			{
 				var name = line.Substring(0, line.IndexOf(':'));
 				var message = "";
 
@@ -171,6 +171,14 @@ namespace BlazeRegulator.Core.IO
 				}
 
 				OnChat(name, message, true);
+			}
+			else if (line.Contains("mode active since"))
+			{
+				block = Block.GI;
+			}
+			else if (block == Block.GI)
+			{
+				block = Block.ALL;//foo.
 			}
 			else if (line.StartsWith("Start PInfo output"))
 			{
@@ -246,6 +254,7 @@ namespace BlazeRegulator.Core.IO
 		{
 			ALL,
 			PINFO,
+			GI
 		}
 
 		#endregion

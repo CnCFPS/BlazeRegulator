@@ -25,8 +25,12 @@ namespace BlazeRegulator
 
 			Game.SetTeamHandler(new RenegadeTeamHandler());
 
-			Game.Events.TestEvent += (s, e) => Console.WriteLine("[RECV] {0}", e.Message);
-			//Game.Events.ChatEvent += (s, e) => Console.WriteLine("{0}: {1}", e.Name, e.Message);
+			/*
+			//Game.Events.TestEvent += (s, e) => Console.WriteLine("[RECV] {0}", e.Message);
+			Game.Events.ChatEvent +=
+				(s, e) =>
+					Console.WriteLine("[CHAT] (IsTeamChat={2},IsHostChat={3}) {0}: {1}", e.Name, e.Message, e.IsTeamChat, e.IsHostChat);
+			*/
 
 			IRC.Instance.Initialize(settings);
 			IRC.Instance.Start();
@@ -49,7 +53,7 @@ namespace BlazeRegulator
 
 		private static void BotShutdown(object sender, ConsoleCancelEventArgs e)
 		{
-			Remote.BotMessage("BlazeRegulator is restarting. Be good while it's gone.", Bot.Version);
+			Remote.BotMessage("BlazeRegulator is restarting. Be good while it's gone.");
 			SettingsManager.SaveSettingsTo(settings, "Settings.xml");
 			IRC.Instance.Shutdown();
 		}

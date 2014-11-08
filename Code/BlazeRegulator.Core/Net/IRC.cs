@@ -84,7 +84,7 @@ namespace BlazeRegulator.Core.Net
 		public void Shutdown()
 		{
 			Log.Instance.WriteLine("Closing IRC connection.");
-			client.Stop(String.Format("BlazeRegulator v{0} shutting down.", "4.5"));
+			client.Stop(String.Format("BlazeRegulator v{0} shutting down.", Bot.Version));
 		}
 
 		public async void Start()
@@ -145,7 +145,7 @@ namespace BlazeRegulator.Core.Net
 				}
 				else if (IsGameChannel(e.Channel))
 				{
-					await client.SendNow("PRIVMSG {0} :BlazeRegulator 4.5 now online. Type !help for a list of commands.", e.Channel);
+					await client.SendNow("PRIVMSG {0} :BlazeRegulator {1} now online. Type !help for a list of commands.", e.Channel, Bot.Version);
 				}
 			}
 		}
