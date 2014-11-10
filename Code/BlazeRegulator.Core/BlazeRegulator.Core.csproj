@@ -42,20 +42,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bot.cs" />
+    <Compile Include="Commands\CommandHandler.cs" />
+    <Compile Include="Commands\CommandManager.cs" />
+    <Compile Include="Commands\ChatCommandFilter.cs" />
+    <Compile Include="Commands\CommandResponse.cs" />
+    <Compile Include="Commands\CommandSource.cs" />
     <Compile Include="Data\APathBeyondTeamHandler.cs" />
     <Compile Include="Data\ColorCode.cs" />
     <Compile Include="Data\ControlCode.cs" />
     <Compile Include="Data\RenegadeTeamHandler.cs" />
-    <Compile Include="EnumEx.cs" />
+    <Compile Include="Linq\EnumEx.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameEventManager.cs" />
     <Compile Include="Data\ITeamHandler.cs" />
-    <Compile Include="ChatEventArgs.cs" />
+    <Compile Include="Data\ChatEventArgs.cs" />
     <Compile Include="IO\Log.cs" />
     <Compile Include="IO\MainLogHandler.cs" />
-    <Compile Include="PlayerJoinEventArgs.cs" />
-    <Compile Include="PlayerLeaveEventArgs.cs" />
-    <Compile Include="PlayerTeamChangedEventArgs.cs" />
+    <Compile Include="Data\PlayerJoinEventArgs.cs" />
+    <Compile Include="Data\PlayerLeaveEventArgs.cs" />
+    <Compile Include="Data\PlayerTeamChangedEventArgs.cs" />
     <Compile Include="Linq\EventHelpers.cs" />
     <Compile Include="Net\RenLogClient.cs">
       <SubType>Code</SubType>
@@ -68,7 +73,7 @@
     <Compile Include="Extensibility\PluginType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IO\SettingsManager.cs" />
-    <Compile Include="Settings.cs" />
+    <Compile Include="Net\Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -8,6 +8,7 @@ namespace BrIrc
 {
     using BlazeRegulator.Core.Extensibility;
     using BlazeRegulator.Core.IO;
+    using Commands;
 
     public class IrcPlugin : Plugin
     {
@@ -59,9 +60,19 @@ namespace BrIrc
 
             irc = localIrc;
             Set(localIrc); // other plugins may want to use the IRC instance.
+
+            RegisterCommands();
+
+            EventMessenger.Instance.Initialize(localIrc);
             return true;
         }
-        
+
+        private void RegisterCommands()
+        {
+            irc.RegisterChatCommand(new ICTestHandler());
+            irc.RegisterChatCommand(new ICMessageHandler());
+        }
+
         /// <summary>
         /// Called when the plugin unloads.
         /// </summary>

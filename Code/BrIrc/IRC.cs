@@ -12,21 +12,39 @@ namespace BrIrc
 	using Atlantis.Linq;
 	using Atlantis.Net.Irc;
 	using BlazeRegulator.Core;
+	using BlazeRegulator.Core.Commands;
 	using BlazeRegulator.Core.IO;
+	using BlazeRegulator.Core.Linq;
+	using Commands;
 
-	// ReSharper disable once InconsistentNaming
+    // ReSharper disable once InconsistentNaming
 	public class IRC
 	{
-		#region Fields
+	    #region Constructor(s)
 
-		private readonly IrcClient client = new IrcClient();
+	    internal IRC()
+	    {
+	        _filter = new ICChatFilter(client);
+	    }
+
+	    #endregion
+        
+		#region Fields
+        
+        private readonly IrcClient client = new IrcClient();
+	    private readonly ICChatFilter _filter;
+
 		private bool initialized;
 		private IrcSettings settings;
 
-		//private List<IICCommand> commands = new List<IICCommand>();
-
 		#endregion
-		
+
+	    #region Properties
+
+	    //internal List<IICCommand> Commands { get; private set; }
+
+	    #endregion
+        
 		#region Methods
 
 		public async void Broadcast(String channel, String format, params object[] args)
@@ -36,7 +54,7 @@ namespace BrIrc
 
 			foreach (var item in settings.Channels.Where(x => value.HasFlag(x.Type)))
 			{
-				await client.SendNow("PRIVMSG {0} :{1}", item.Name, message);
+				await client.Send("PRIVMSG {0} :{1}", item.Name, message);
 			}
 		}
 
@@ -44,6 +62,8 @@ namespace BrIrc
 		{
 			Log.Instance.WriteLine("Initializing IRC client...");
 			settings = config;
+
+            _filter.Initialize();
 
 			client.HostName = settings.Server;
 			client.Port = settings.Port;
@@ -53,7 +73,7 @@ namespace BrIrc
 
 			client.ConnectionEstablishedEvent += OnConnect;
 			client.JoinEvent += OnJoin;
-			client.PrivmsgReceivedEvent += OnPrivmsg;
+			//client.PrivmsgReceivedEvent += OnPrivmsg;
 			initialized = true;
 		}
 
@@ -72,6 +92,11 @@ namespace BrIrc
 		                                   x.Type == IrcChannelType.Admin));
 		}
 
+	    public void RegisterChatCommand<THandler>(THandler handler) where THandler : CommandHandler
+	    {
+	        _filter.RegisterCommand(handler);
+	    }
+
 		public void Shutdown()
 		{
 			Log.Instance.WriteLine("Closing IRC connection.");
@@ -89,6 +114,11 @@ namespace BrIrc
 			await client.Start();
 		}
 
+	    public void UnregisterChatCommand<THandler>(THandler handler) where THandler : CommandHandler
+	    {
+	        _filter.UnregisterCommand(handler);
+	    }
+
 		#endregion
 		
 		#region Event Handlers
@@ -100,11 +130,11 @@ namespace BrIrc
 			{
 				if (item.PasswordSpecified)
 				{
-					await client.SendNow("JOIN {0} {1}", item.Name, item.Password);
+					await client.Send("JOIN {0} {1}", item.Name, item.Password);
 				}
 				else
 				{
-					await client.SendNow("JOIN {0}", item.Name);
+                    await client.Send("JOIN {0}", item.Name);
 				}
 			}
 
@@ -117,12 +147,12 @@ namespace BrIrc
 					await Task.Factory.StartNew(async () =>
 					                                  {
 						                                  await Task.Delay((int)delay * 1000);
-						                                  await client.SendNow(exec);
+                                                          await client.Send(exec);
 					                                  });
 				}
 				else
 				{
-					await client.SendNow(exec);
+                    await client.Send(exec);
 				}
 			}
 		}
@@ -133,20 +163,12 @@ namespace BrIrc
 			{
 				if (!IsValidChannel(e.Channel))
 				{
-					await client.SendNow("PART {0} :Not in my channel list.", e.Channel);
+                    await client.Send("PART {0} :Not in my channel list.", e.Channel);
 				}
 				else if (IsGameChannel(e.Channel))
 				{
-					await client.SendNow("PRIVMSG {0} :BlazeRegulator {1} now online. Type !help for a list of commands.", e.Channel, Bot.Version);
+                    await client.Send("PRIVMSG {0} :BlazeRegulator {1} now online. Type !help for a list of commands.", e.Channel, Bot.Version);
 				}
-			}
-		}
-
-		private void OnPrivmsg(object sender, MessageReceivedEventArgs e)
-		{
-			if (e.IsChannel)
-			{
-				//var tokens = e.Message.Split(' ');
 			}
 		}
 

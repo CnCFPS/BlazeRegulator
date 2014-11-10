@@ -4,14 +4,14 @@
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-namespace BlazeRegulator.Core
+namespace BlazeRegulator.Core.Linq
 {
-	using System;
-	using System.ComponentModel;
-	using System.Linq;
-	using Atlantis.Linq;
+    using System;
+    using System.ComponentModel;
+    using System.Linq;
+    using Atlantis.Linq;
 
-	public static class EnumEx
+    public static class EnumEx
 	{
 		public static T GetValueFromDescription<T>(String description)
 		{

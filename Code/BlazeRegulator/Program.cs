@@ -9,6 +9,7 @@ namespace BlazeRegulator
 	using System;
 	using System.Threading;
 	using Core;
+	using Core.Commands;
 	using Core.Data;
 	using Core.IO;
 	using Core.Net;
@@ -25,13 +26,15 @@ namespace BlazeRegulator
 
 			Game.SetTeamHandler(new RenegadeTeamHandler());
 
+            CommandManager.Instance.Load();
+
             // TODO: Test calling this twice with a different directory.
 			Bot.Plugins.LoadDirectory("Plugins");
 
 			MainLogHandler.Instance.Initialize(settings);
 			MainLogHandler.Instance.Start();
 
-			Thread.Sleep(1000);
+			Thread.Sleep(500);
 
 			Remote.Initialize(settings);
 			Remote.BotMessage("BlazeRegulator {0} starting up. Type !help for a list of commands.", Bot.Version); 
