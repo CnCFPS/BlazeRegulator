@@ -56,8 +56,6 @@ namespace BlazeRegulator.Core.Extensibility
 	        return value as T;
 	    }
 
-
-
 	    /// <summary>
 		/// Called when the plugin loads.
 		/// </summary>

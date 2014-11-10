@@ -11,6 +11,7 @@ namespace BlazeRegulator.Core
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Threading.Tasks;
+	using Data;
 	using IO;
 
 
@@ -57,8 +58,8 @@ namespace BlazeRegulator.Core
 			add { Register(value); }
 			remove { Unregister(value); }
 		}
-
-		public event EventHandler<TestEventArgs> TestEvent
+        
+        public event EventHandler<LogEventArgs> LogReceivedEvent
 		{
 			add { Register(value); }
 			remove { Unregister(value); }
@@ -145,11 +146,11 @@ namespace BlazeRegulator.Core
 		#endregion
 	}
 
-	#region External type: TestEventArgs
+	#region External type: LogEventArgs
 
-	public class TestEventArgs : EventArgs
+	public class LogEventArgs : EventArgs
 	{
-		public TestEventArgs(string message)
+		public LogEventArgs(string message)
 		{
 			Message = message;
 		}

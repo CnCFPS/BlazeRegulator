@@ -145,36 +145,44 @@ namespace BlazeRegulator.Core.Net
 				return;
 			}
 
-			stream = client.GetStream();
-			reader = new StreamReader(stream, Encoding.UTF8);
+		    try
+		    {
+		        stream = client.GetStream();
+		        reader = new StreamReader(stream, Encoding.UTF8);
 
-			var sb = new StringBuilder();
-			while (Connected)
-			{
-				if (!client.Connected)
-				{
-					// TODO: Reconnect.
-					RenLogDisconnectEvent.Raise(this, EventArgs.Empty);
-					break;
-				}
+		        var sb = new StringBuilder();
+		        while (Connected)
+		        {
+		            if (!client.Connected)
+		            {
+		                // TODO: Reconnect.
+		                RenLogDisconnectEvent.Raise(this, EventArgs.Empty);
+		                break;
+		            }
 
-				if (stream.DataAvailable)
-				{
-					Int32 c;
-					while ((c = reader.Read()) >= 0)
-					{
-						if (c == 0)
-						{
-							OnLogReceived(sb.ToString().Trim());
-							sb.Clear();
-						}
-						else
-						{
-							sb.Append((char)c);
-						}
-					}
-				}
-			}
+		            if (stream.DataAvailable)
+		            {
+		                Int32 c;
+		                while ((c = reader.Read()) >= 0)
+		                {
+		                    if (c == 0)
+		                    {
+		                        OnLogReceived(sb.ToString().Trim());
+		                        sb.Clear();
+		                    }
+		                    else
+		                    {
+		                        sb.Append((char)c);
+		                    }
+		                }
+		            }
+		        }
+		    }
+		    catch (SocketException e)
+		    {
+		        Log.Instance.Error("An error occured on the RenLog client. {0}", e.Message);
+		        Log.Instance.Error("Error code: {0:0.0}", (int)e.SocketErrorCode);
+		    }
 		}
 
 		#endregion

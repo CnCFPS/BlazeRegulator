@@ -7,8 +7,6 @@
 namespace BlazeRegulator.Core
 {
 	using System;
-	using System.Collections.Generic;
-	using System.ComponentModel;
 	using System.Xml.Serialization;
 
 	public class Settings

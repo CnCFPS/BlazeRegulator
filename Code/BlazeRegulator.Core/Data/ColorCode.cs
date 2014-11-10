@@ -19,7 +19,7 @@ namespace BlazeRegulator.Core.Data
 		Yellow = 8, /**< Yellow */
 		LightGreen = 9, /**< Light green */
 		Teal = 10, /**< Cornflower blue */
-		LightCyan = 11, /**< Light blue */
+		LightBlue = 11, /**< Light blue */
 		Blue = 12, /**< Blue */
 		Violet = 13, /**< Violet */
 		DarkGray = 14, /**< Dark gray */

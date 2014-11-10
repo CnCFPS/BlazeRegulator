@@ -68,12 +68,12 @@ namespace BlazeRegulator.Core.Data
 
 		public string GetIrcFormattedTeamString(int team)
 		{
-			return String.Format("\x0003{0}{1}\x0003", GetTeamColor(team), GetTeamName(team));
+		    return String.Format("{0}{1}{2}{0}", (char)(int)ControlCode.Color, GetTeamColor(team), GetTeamName(team));
 		}
 
 		public string GetIrcFormattedPlayerString(Player p)
 		{
-			return String.Format("\x0003{0}{1}\x0003", GetTeamColor(p.Team), p.Name);
+		    return String.Format("{0}{1}{2}{0}", (char)(int)ControlCode.Color, GetTeamColor(p.Team), p);
 		}
 
 		#endregion

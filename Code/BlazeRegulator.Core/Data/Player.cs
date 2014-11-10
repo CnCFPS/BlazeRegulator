@@ -209,5 +209,31 @@ namespace BlazeRegulator.Core.Data
 			new ConcurrentDictionary<String, object>(StringComparer.OrdinalIgnoreCase);
 
 		#endregion
+
+	    #region Overrides of Object
+
+	    /// <summary>
+	    /// Serves as a hash function for a particular type. 
+	    /// </summary>
+	    /// <returns>
+	    /// A hash code for the current object.
+	    /// </returns>
+	    public override int GetHashCode()
+	    {
+	        return _data.GetHashCode();
+	    }
+
+	    /// <summary>
+	    /// Returns a string that represents the current object.
+	    /// </summary>
+	    /// <returns>
+	    /// A string that represents the current object.
+	    /// </returns>
+	    public override string ToString()
+	    {
+	        return Name;
+	    }
+
+	    #endregion
 	}
 }

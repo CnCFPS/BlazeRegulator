@@ -8,7 +8,6 @@ namespace BlazeRegulator.Core.IO
 {
 	using System;
 	using System.Diagnostics;
-	using System.Net;
 	using System.Text.RegularExpressions;
 	using Atlantis.Linq;
 	using Data;
@@ -71,6 +70,8 @@ namespace BlazeRegulator.Core.IO
 
 		private void OnGameLog(String line)
 		{
+            Game.Events.Raise(this, new LogEventArgs(line));
+
 			// "CHAT;%s;%d;%ls;%ws", messageType, Player->PlayerId, Player->Get_Name(), Message
 			// "HOSTCHAT;%s;%d;%s", messageType, ID, Message
 			Match m;
@@ -145,10 +146,10 @@ namespace BlazeRegulator.Core.IO
 
 		private async void OnRenLog(String line)
 		{
-			//Game.Events.Raise(this, new TestEventArgs(line));
+			Game.Events.Raise(this, new LogEventArgs(line));
 
 			Match m;
-			if (line.Matches(@"[^ ]+:.*"))
+			if (line.Matches(@"^[^ ]+:.*"))
 			{
 				var name = line.Substring(0, line.IndexOf(':'));
 				var message = "";

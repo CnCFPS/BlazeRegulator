@@ -35,7 +35,7 @@
   <ItemGroup>
     <Reference Include="Atlantis.Net.Irc, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Atlantis.Net.Irc.4.1.0-alpha\lib\net451\Atlantis.Net.Irc.dll</HintPath>
+      <HintPath>..\packages\Atlantis.Net.Irc.4.1.2-alpha\lib\net451\Atlantis.Net.Irc.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
