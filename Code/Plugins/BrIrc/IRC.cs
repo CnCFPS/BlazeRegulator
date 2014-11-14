@@ -52,10 +52,19 @@ namespace BrIrc
 			String message = String.Format(format, args);
 			var value = EnumEx.GetValueFromDescription<IrcChannelType>(channel);
 
-			foreach (var item in settings.Channels.Where(x => value.HasFlag(x.Type)))
-			{
-				await client.Send("PRIVMSG {0} :{1}", item.Name, message);
-			}
+#if !DEBUG
+            // We don't want to broadcast to a debug channel if there we're not a debug build.
+
+		    if (value.HasFlag(IrcChannelType.Debug))
+		    {
+                value &= ~IrcChannelType.Debug;
+		    }
+#endif
+
+            foreach (var item in settings.Channels.Where(x => value.HasFlag(x.Type)))
+            {
+                await client.Send("PRIVMSG {0} :{1}", item.Name, message);
+            }
 		}
 
 		public void Initialize(IrcSettings config)
@@ -89,7 +98,8 @@ namespace BrIrc
 		                              x =>
 		                                  x.Name.EqualsIgnoreCase(channel) &&
 		                                  (x.Type == IrcChannelType.Public ||
-		                                   x.Type == IrcChannelType.Admin));
+		                                   x.Type == IrcChannelType.Admin ||
+		                                   x.Type == IrcChannelType.Debug));
 		}
 
 	    public void RegisterChatCommand<THandler>(THandler handler) where THandler : CommandHandler
@@ -144,11 +154,11 @@ namespace BrIrc
 				if (item.DelaySpecified)
 				{
 					double delay = item.Delay;
-					await Task.Factory.StartNew(async () =>
-					                                  {
-						                                  await Task.Delay((int)delay * 1000);
-                                                          await client.Send(exec);
-					                                  });
+				    await Task.Factory.StartNew(() =>
+				                                {
+				                                    System.Threading.Thread.Sleep((int)delay * 1000);
+				                                    client.Send(exec);
+				                                });
 				}
 				else
 				{

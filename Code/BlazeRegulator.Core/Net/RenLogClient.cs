@@ -19,10 +19,12 @@ namespace BlazeRegulator.Core.Net
     {
 		#region Fields
 
-		private readonly TcpClient client;
+		private readonly TcpClient _client;
 		private StreamReader reader;
 		private NetworkStream stream;
 		private readonly Thread thread;
+
+	    private bool _stopRequested;
 
 		#endregion
 
@@ -30,7 +32,7 @@ namespace BlazeRegulator.Core.Net
 
 		public RenLogClient()
 		{
-			client = new TcpClient();
+			_client = new TcpClient();
 			thread = new Thread(ThreadCallback);
 		}
 
@@ -53,7 +55,7 @@ namespace BlazeRegulator.Core.Net
 
 		public bool Connected
 		{
-			get { return client != null && client.Connected; }
+			get { return _client != null && _client.Connected; }
 		}
 
 		#endregion
@@ -64,7 +66,7 @@ namespace BlazeRegulator.Core.Net
 		{
 			try
 			{
-				client.Connect(host, port);
+				_client.Connect(host, port);
 			}
 			catch (SocketException e)
 			{
@@ -77,9 +79,17 @@ namespace BlazeRegulator.Core.Net
 
 		public void Stop()
 		{
-			if (client != null)
+            _stopRequested = true;
+
+		    Thread.Sleep(250);
+		    if (thread != null && !_stopRequested)
+		    {
+		        thread.Abort();
+		    }
+
+			if (_client != null)
 			{
-				client.Close();
+				_client.Close();
 			}
 		}
 
@@ -139,7 +149,7 @@ namespace BlazeRegulator.Core.Net
 
 		private void ThreadCallback(Object o)
 		{
-			if (client == null)
+			if (_client == null)
 			{
 				Thread.CurrentThread.Abort();
 				return;
@@ -147,13 +157,18 @@ namespace BlazeRegulator.Core.Net
 
 		    try
 		    {
-		        stream = client.GetStream();
+		        stream = _client.GetStream();
 		        reader = new StreamReader(stream, Encoding.UTF8);
 
 		        var sb = new StringBuilder();
 		        while (Connected)
 		        {
-		            if (!client.Connected)
+		            if (_stopRequested)
+		            {
+		                break;
+		            }
+
+		            if (!_client.Connected)
 		            {
 		                // TODO: Reconnect.
 		                RenLogDisconnectEvent.Raise(this, EventArgs.Empty);
@@ -178,10 +193,20 @@ namespace BlazeRegulator.Core.Net
 		            }
 		        }
 		    }
+		    catch (IOException)
+		    {
+		        // Omnomnom!
+                _client.Close();
+		    }
 		    catch (SocketException e)
 		    {
 		        Log.Instance.Error("An error occured on the RenLog client. {0}", e.Message);
 		        Log.Instance.Error("Error code: {0:0.0}", (int)e.SocketErrorCode);
+		    }
+		    catch (ThreadAbortException)
+		    {
+		        // Omnomnom!
+                // We don't want to do anything here, just catch it so it doesn't propagate to the main layer.
 		    }
 		}
 

@@ -14,9 +14,11 @@ namespace BlazeRegulator
 	using Core.IO;
 	using Core.Net;
 
-	public class Program
+	public static class Program
 	{
 		private static Settings settings;
+
+	    private static bool exit;
 
 		// ReSharper disable once FunctionNeverReturns
 		public static void Main(string[] args)
@@ -40,7 +42,7 @@ namespace BlazeRegulator
 			Remote.BotMessage("BlazeRegulator {0} starting up. Type !help for a list of commands.", Bot.Version); 
 
 			Console.CancelKeyPress += BotShutdown;
-			while (true)
+			while (!exit)
 			{
 				new EventWaitHandle(false, EventResetMode.ManualReset).WaitOne();
 			}
@@ -48,9 +50,13 @@ namespace BlazeRegulator
 
 		private static void BotShutdown(object sender, ConsoleCancelEventArgs e)
 		{
-			Remote.BotMessage("BlazeRegulator is restarting. Be good while it's gone.");
+            Remote.BotMessage("BlazeRegulator is restarting. Be good while it's gone.");
+            MainLogHandler.Instance.Stop();
             SettingsManager.SaveSettingsTo(settings, "Settings.xml");
 		    Bot.Plugins.UnloadAll();
+		    Thread.Sleep(1000);
+
+		    exit = true;
 		}
 	}
 }

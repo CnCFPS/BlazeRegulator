@@ -19,8 +19,8 @@ namespace BlazeRegulator.Core.Data
 		/// </summary>
 		private static readonly String[] reservedKeys =
 		{
-			"uiPlayerId", "bConnectionLost", "dtLeaveTime", "sName", "iScore",
-			"iTeam", "bFirstPlayerInfo"
+			"uiPlayerId", "bConnectionLost", "dtJoinTime", "dtLeaveTime", "sName", "iScore",
+			"iTeam", "bFirstPlayerInfo", "bIsInGame"
 		};
 
 		#region Indexers
@@ -115,17 +115,43 @@ namespace BlazeRegulator.Core.Data
 				object value;
 				_data.TryGetValue("uiPlayerId", out value);
 
-				return value is uint ? (uint)value : 0;
+			    return value is uint ? (uint)value : 0;
 			}
 			set { _data["uiPlayerId"] = value; }
 		}
 
-		/// <summary>
-		///     Gets or sets a value indicating whether the player is ingame.
-		/// </summary>
-		public bool IsInGame { get; set; }
+	    /// <summary>
+	    ///     Gets or sets a value indicating whether the player is ingame.
+	    /// </summary>
+	    public bool IsInGame
+	    {
+	        get
+	        {
+	            object value;
+	            _data.TryGetValue("bIsInGame", out value);
 
-		/// <summary>
+	            return value is bool && (bool)value;
+	        }
+	        set { _data["bIsInGame"] = value; }
+	    }
+
+        /// <summary>
+        /// <para>Gets a value indicating when the player joined.</para>
+        /// <para>This is used to suppress the PlayerJoinedEvent being fired when the bot starts up.</para>
+        /// </summary>
+	    public DateTime JoinTime
+	    {
+	        get
+	        {
+                object value;
+                _data.TryGetValue("dtJoinTime", out value);
+
+                return value is DateTime ? (DateTime)value : DateTime.MinValue;
+	        }
+	        internal set { _data["dtJoinTime"] = value; }
+	    }
+
+	    /// <summary>
 		///     Gets or sets a value indicating the time that player has left the game.
 		/// </summary>
 		public DateTime LeaveTime
@@ -135,9 +161,9 @@ namespace BlazeRegulator.Core.Data
 				object value;
 				_data.TryGetValue("dtLeaveTime", out value);
 
-				return value is DateTime ? (DateTime)value : DateTime.MaxValue;
+				return value is DateTime ? (DateTime)value : DateTime.MinValue;
 			}
-			set { _data["dtLeaveTime"] = value; }
+	        internal set { _data["dtLeaveTime"] = value; }
 		}
 
 		/// <summary>

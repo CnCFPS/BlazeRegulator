@@ -40,6 +40,18 @@ namespace BlazeRegulator.Core
 			add { Register(value); }
 			remove { Unregister(value); }
 		}
+        
+        public event EventHandler<GameOverEventArgs> GameOverEvent
+        {
+            add { Register(value); }
+            remove { Unregister(value); }
+        }
+
+        public event EventHandler<LogEventArgs> LogReceivedEvent
+        {
+            add { Register(value); }
+            remove { Unregister(value); }
+        }
 
 		public event EventHandler<PlayerJoinEventArgs> PlayerJoinEvent
 		{
@@ -59,11 +71,11 @@ namespace BlazeRegulator.Core
 			remove { Unregister(value); }
 		}
         
-        public event EventHandler<LogEventArgs> LogReceivedEvent
-		{
-			add { Register(value); }
-			remove { Unregister(value); }
-		} 
+	    public event EventHandler<UnhandledLogEventArgs> UnhandledLogReceivedEvent
+        {
+            add { Register(value); }
+            remove { Unregister(value); }
+        }
 
 		#endregion
 
@@ -157,6 +169,13 @@ namespace BlazeRegulator.Core
 
 		public String Message { get; private set; }
 	}
+
+    public class UnhandledLogEventArgs : LogEventArgs
+    {
+        public UnhandledLogEventArgs(string message) : base(message)
+        {
+        }
+    }
 
 	#endregion
 }

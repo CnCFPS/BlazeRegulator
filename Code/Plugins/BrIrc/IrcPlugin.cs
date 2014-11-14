@@ -8,7 +8,7 @@ namespace BrIrc
 {
     using BlazeRegulator.Core.Extensibility;
     using BlazeRegulator.Core.IO;
-    using Commands;
+    using CommandHandlers;
 
     public class IrcPlugin : Plugin
     {
@@ -69,8 +69,10 @@ namespace BrIrc
 
         private void RegisterCommands()
         {
-            irc.RegisterChatCommand(new ICTestHandler());
+            //irc.RegisterChatCommand(new ICTestHandler());
             irc.RegisterChatCommand(new ICMessageHandler());
+            irc.RegisterChatCommand(new ICGameInfoHandler());
+            irc.RegisterChatCommand(new ICPlayerListHandler());
         }
 
         /// <summary>

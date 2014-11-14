@@ -7,9 +7,8 @@
 namespace BlazeRegulator.Core.Data
 {
 	using System;
-	using Net;
 
-	public class RenegadeTeamHandler : ITeamHandler
+    public class RenegadeTeamHandler : ITeamHandler
 	{
 		#region Implementation of ITeamHandler
 
@@ -22,6 +21,7 @@ namespace BlazeRegulator.Core.Data
 				case "Neutral":
 					return -1;
 				case "Nod":
+                case "NOD":
 					return 0;
 				case "GDI":
 					return 1;
@@ -68,12 +68,12 @@ namespace BlazeRegulator.Core.Data
 
 		public string GetIrcFormattedTeamString(int team)
 		{
-		    return String.Format("{0}{1}{2}{0}", (char)(int)ControlCode.Color, GetTeamColor(team), GetTeamName(team));
+		    return String.Format("{0}{1:00}{2}{0}", (char)3, GetTeamColor(team), GetTeamName(team));
 		}
 
 		public string GetIrcFormattedPlayerString(Player p)
 		{
-		    return String.Format("{0}{1}{2}{0}", (char)(int)ControlCode.Color, GetTeamColor(p.Team), p);
+		    return String.Format("{0}{1:00}{2}{0}", (char)3, GetTeamColor(p.Team), p);
 		}
 
 		#endregion

@@ -19,5 +19,6 @@ namespace BrIrc
         [Description("B")] [XmlEnum("B")] Both = 3,
         [Description("M")] [XmlEnum("M")] Moderator = 4,
         [Description("G")] [XmlEnum("G")] General = 8,
+        [Description("D")] [XmlEnum("D")] Debug = 16,
     }
 }

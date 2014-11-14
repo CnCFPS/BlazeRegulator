@@ -7,7 +7,6 @@
 namespace BrIrc.Commands
 {
     using System;
-    using System.ComponentModel;
     using System.Diagnostics;
     using System.Linq;
     using Atlantis.Linq;
@@ -18,12 +17,10 @@ namespace BrIrc.Commands
     public class ICChatFilter : ChatCommandFilter
     {
         private readonly IrcClient _client;
-        private readonly PrefixComparer _prefixComparer;
 
         public ICChatFilter(IrcClient client)
         {
             _client = client;
-            _prefixComparer = new PrefixComparer(_client);
         }
 
         #region Helper Methods

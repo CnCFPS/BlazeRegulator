@@ -1,30 +1,30 @@
 ﻿// -----------------------------------------------------------------------------
-//  <copyright file="ICMessageHandler.cs" company="Zack Loveless">
+//  <copyright file="ICTestCommands.cs" company="Zack Loveless">
 //      Copyright (c) Zack Loveless.  All rights reserved.
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-namespace BrIrc.Commands
+namespace BrIrc.CommandHandlers
 {
+    using System;
     using BlazeRegulator.Core.Commands;
-    using BlazeRegulator.Core.Net;
 
-    public class ICMessageHandler : CommandHandler
+    public class ICTestHandler : CommandHandler
     {
-        public ICMessageHandler() : base("hostmsg")
+        public ICTestHandler() : base("test")
         {
         }
 
         #region Overrides of CommandHandler
 
         public override int Parameters
-        { // !msg <parameters>
-            get { return 1; }
+        {
+            get { return 0; }
         }
 
-        public override void Handle(CommandSource source, string parameters)
+        public override void Handle(CommandSource source, String parameters)
         {
-            Remote.Message("({0}@IRC): {1}", source, parameters);
+            source.Respond("Test command triggered. Source: {0} - Parameters: {1}", source, parameters);
         }
 
         #endregion

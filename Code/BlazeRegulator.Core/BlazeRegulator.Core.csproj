@@ -51,6 +51,7 @@
     <Compile Include="Data\ColorCode.cs" />
     <Compile Include="Data\ControlCode.cs" />
     <Compile Include="Data\RenegadeTeamHandler.cs" />
+    <Compile Include="Data\GameOverEventArgs.cs" />
     <Compile Include="Linq\EnumEx.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameEventManager.cs" />
