@@ -8,7 +8,6 @@ namespace BlazeRegulator.Core.IO
 {
     using System;
     using System.Diagnostics;
-    using System.Net;
     using System.Text.RegularExpressions;
     using Atlantis.Linq;
     using Data;
@@ -16,17 +15,6 @@ namespace BlazeRegulator.Core.IO
 
     public class MainLogHandler
     {
-        #region Singleton
-
-        private static MainLogHandler instance;
-
-        public static MainLogHandler Instance
-        {
-            get { return instance ?? (instance = new MainLogHandler()); }
-        }
-
-        #endregion
-
         private readonly RenLogClient _client;
 
         private String _host;
@@ -50,7 +38,7 @@ namespace BlazeRegulator.Core.IO
 
             _client.RenLogEvent += OnRenLog;
             _client.ConsoleOutputEvent += OnConsoleOut;
-            //_client.GameLogEvent += OnGameLog;
+            _client.GameLogEvent += OnGameLog;
         }
 
         private void OnChat(string name, string message, bool team = false)
@@ -147,12 +135,22 @@ namespace BlazeRegulator.Core.IO
             Game.Events.Raise(this, new GameOverEventArgs(winnerName, winCondition, team0Score, team1Score));
         }
 
+        protected virtual void OnLevelLoaded()
+        {
+            Game.Events.Raise(this, new LevelLoadedEventArgs(Game.Map));
+        }
+
+        protected virtual void OnLevelLoading(string mapName)
+        {
+            Game.Map = mapName;
+            Game.Events.Raise(this, new LevelLoadingEventArgs(mapName));
+        }
+
         protected virtual async void OnPrePlayerJoin(String playerName)
         {
             var p = await Game.GetPlayer(x => x.Name.EqualsIgnoreCase(playerName));
             if (p != null && !p.IsInGame)
             {
-                p.IsInGame = true;
                 p.FirstPlayerInfo = false; // A join message was received, so we need to eventually trigger 
             }
             else if (p == null)
@@ -161,6 +159,7 @@ namespace BlazeRegulator.Core.IO
                 await Game.AddPlayer(p);
             }
 
+            p.IsInGame = true;
             p.JoinTime = DateTime.Now;
 
             Remote.Execute("player_info {0}", playerName);
@@ -178,6 +177,7 @@ namespace BlazeRegulator.Core.IO
             var p = await Game.GetPlayer(x => x.IsInGame && x.Name.EqualsIgnoreCase(playerName));
             if (p != null)
             {
+                p.Id = 0;
                 p.IsInGame = false;
                 p.LeaveTime = DateTime.Now;
 
@@ -274,8 +274,39 @@ namespace BlazeRegulator.Core.IO
              * [22:47:43] BlazeRegulator: Unhandled log: [RENLOG] Load took 2.0 seconds. Waiting for players...
              * [22:47:43] BlazeRegulator: Unhandled log: [RENLOG] Finished waiting after 0.0 seconds. Some players are still loading.
              * [22:47:43] BlazeRegulator: Unhandled log: [RENLOG] The Current Map Number is 51
+             * 
+             * [13:24:43] BlazeRegulator: Unhandled log: [RENLOG] The version of player 9 is 4.100000 r6482
+             * [13:24:44] BlazeRegulator: Unhandled log: [RENLOG] The serial hash of player 9 is 00000000000000000000000000000000
              */
+            else if (line.TryMatch(@"The version of player (\d+) is (.+)", out m))
+            {
+                var id = int.Parse(m.Groups[1].Value);
 
+                var p = await Game.GetPlayer(x => x.Id == id);
+                if (p != null)
+                {
+                    p.Version = m.Groups[2].Value;
+                }
+            }
+            else if (line.TryMatch(@"The serial hash of player (\d+) is (.+)", out m))
+            {
+                var id = int.Parse(m.Groups[1].Value);
+
+                var p = await Game.GetPlayer(x => x.Id == id);
+                if (p != null)
+                {
+                    p.Serial = m.Groups[2].Value;
+                }
+            }
+            else if (line.StartsWith("Loading level"))
+            {
+                var map = line.Substring(13).Trim();
+                OnLevelLoading(map);
+            }
+            else if (line.StartsWith("Level loaded OK"))
+            {
+                OnLevelLoaded();
+            }
             // ^(\d+)\s+(.*)\s+(-?\d+)\s+(\S+)\x09(\d+)\x09([^;]+);(\d+)\s+(\d+)\s+(\S+)
             else if (line.TryMatch(@"^\s*(?<id>\d+)\s+(?<name>[^ ]+)\s+(?<score>-?\d+)\s+(?<team>\S+)\x09(?<ping>\d+)\x09(?<ipaddr>[^;]+);(\d+)\s+(?<kbps>\d+)\s+(?<time>\S+)", out m))
             {
@@ -314,6 +345,7 @@ namespace BlazeRegulator.Core.IO
                     await Game.AddPlayer(p);
                 }
 
+                p.IsInGame = true;
                 p.Team = team;
                 p.Score = score;
 
@@ -360,6 +392,7 @@ namespace BlazeRegulator.Core.IO
                 p.Id = id;
                 p.Name = name;
                 p.Score = score;
+                p.IsInGame = true;
 
                 if (team != p.Team && p.FirstPlayerInfo)
                 {

@@ -47,7 +47,7 @@ namespace BlazeRegulator.Core
 
 		        try
 		        {
-		            return players.AsReadOnly();
+		            return players;
 		        }
 		        finally
 		        {
@@ -120,6 +120,20 @@ namespace BlazeRegulator.Core
 			}
 		}
 
+	    public static async Task<IEnumerable<Player>> GetPlayers(Func<Player, bool> predicate)
+	    {
+            await playersLock.WaitAsync();
+
+            try
+            { // Enumerate to array so the lock can be released quickly.
+                return players.Where(predicate).ToArray();
+            }
+            finally
+            {
+                playersLock.Release();
+            }
+	    } 
+
 		public static async Task<IEnumerable<Player>> GetPlayers(int? team = null)
 		{
             await playersLock.WaitAsync();
@@ -134,6 +148,10 @@ namespace BlazeRegulator.Core
 			}
 		}
 
+        /// <summary>
+        /// Sets the handler for mapping team ID's to strings and formatting players.
+        /// </summary>
+        /// <param name="handler"></param>
 		public static void SetTeamHandler(ITeamHandler handler)
 		{
 			TeamHandler = handler;

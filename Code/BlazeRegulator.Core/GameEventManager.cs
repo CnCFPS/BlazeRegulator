@@ -47,6 +47,18 @@ namespace BlazeRegulator.Core
             remove { Unregister(value); }
         }
 
+        public event EventHandler<LevelLoadedEventArgs> LevelLoadedEvent
+        {
+            add { Register(value); }
+            remove { Unregister(value); }
+        }
+
+        public event EventHandler<LevelLoadingEventArgs> LevelLoadingEvent
+        {
+            add { Register(value); }
+            remove { Unregister(value); }
+        }
+
         public event EventHandler<LogEventArgs> LogReceivedEvent
         {
             add { Register(value); }

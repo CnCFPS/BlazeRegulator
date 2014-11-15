@@ -13,11 +13,13 @@ namespace BlazeRegulator
 	using Core.Data;
 	using Core.IO;
 	using Core.Net;
+	using Core.Net.Irc;
 
-	public static class Program
+    public static class Program
 	{
+	    private static MainLogHandler logHandler;
+        private static IRC irc;
 		private static Settings settings;
-
 	    private static bool exit;
 
 		// ReSharper disable once FunctionNeverReturns
@@ -26,19 +28,26 @@ namespace BlazeRegulator
 			Console.Title = String.Format("BlazeRegulator v{0} by Genesis2001", Bot.Version);
 			settings = SettingsManager.LoadSettingsFrom<Settings>("Settings.xml");
 
-			Game.SetTeamHandler(new RenegadeTeamHandler());
+            Remote.Initialize(settings);
 
-            CommandManager.Instance.Load();
+			CommandManager.Instance.Load();
 
-            // TODO: Test calling this twice with a different directory.
-			Bot.Plugins.LoadDirectory("Plugins");
+		    irc = new IRC();
+		    irc.Initialize();
+            irc.Start();
 
-			MainLogHandler.Instance.Initialize(settings);
-			MainLogHandler.Instance.Start();
+		    Bot.Dependencies.Register(irc);
 
+            // Set the team handler 
+            Game.SetTeamHandler(new RenegadeTeamHandler());
+            Bot.Plugins.LoadDirectory("Plugins");
+
+            logHandler = new MainLogHandler();
+		    logHandler.Initialize(settings);
+            logHandler.Start();
+            
 			Thread.Sleep(500);
-
-			Remote.Initialize(settings);
+            
 			Remote.BotMessage("BlazeRegulator {0} starting up. Type !help for a list of commands.", Bot.Version); 
 
 			Console.CancelKeyPress += BotShutdown;
@@ -51,10 +60,17 @@ namespace BlazeRegulator
 		private static void BotShutdown(object sender, ConsoleCancelEventArgs e)
 		{
             Remote.BotMessage("BlazeRegulator is restarting. Be good while it's gone.");
-            MainLogHandler.Instance.Stop();
             SettingsManager.SaveSettingsTo(settings, "Settings.xml");
+
+            if (logHandler != null)
+		    {
+		        logHandler.Stop();
+		    }
+
 		    Bot.Plugins.UnloadAll();
 		    Thread.Sleep(1000);
+
+            irc.Shutdown();
 
 		    exit = true;
 		}

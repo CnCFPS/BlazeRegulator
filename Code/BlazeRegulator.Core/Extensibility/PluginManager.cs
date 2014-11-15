@@ -4,7 +4,7 @@
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-namespace BlazeRegulator.Core
+namespace BlazeRegulator.Core.Extensibility
 {
     using System;
     using System.Collections.Generic;
@@ -13,7 +13,6 @@ namespace BlazeRegulator.Core
     using System.Diagnostics;
     using System.Linq;
     using IO;
-    using Extensibility;
 
     public class PluginManager
     {
@@ -41,7 +40,7 @@ namespace BlazeRegulator.Core
             }
         }
 
-        public IEnumerable<Plugin> GetPlugins(Func<Plugin, bool> predicate)
+        public IEnumerable<Plugin> FindPlugins(Func<Plugin, bool> predicate)
         {
             return plugins.Where(x => x.IsValueCreated).Select(x => x.Value).Where(predicate);
         }

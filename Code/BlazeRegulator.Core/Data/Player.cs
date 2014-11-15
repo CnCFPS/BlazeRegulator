@@ -20,7 +20,7 @@ namespace BlazeRegulator.Core.Data
 		private static readonly String[] reservedKeys =
 		{
 			"uiPlayerId", "bConnectionLost", "dtJoinTime", "dtLeaveTime", "sName", "iScore",
-			"iTeam", "bFirstPlayerInfo", "bIsInGame"
+			"iTeam", "bFirstPlayerInfo", "bIsInGame", "sSerial", "sVersion"
 		};
 
 		#region Indexers
@@ -196,7 +196,19 @@ namespace BlazeRegulator.Core.Data
 			set { _data["iScore"] = value; }
 		}
 
-		/// <summary>
+	    public string Serial
+	    {
+            get
+            {
+                object value;
+                _data.TryGetValue("sSerial", out value);
+
+                return value as String;
+            }
+	        set { _data["sSerial"] = value; }
+	    }
+
+	    /// <summary>
 		///     Gets or sets a value indicating the team the player is on.
 		/// </summary>
 		public int Team
@@ -210,6 +222,18 @@ namespace BlazeRegulator.Core.Data
 			}
 			set { _data["iTeam"] = value; }
 		}
+
+        public String Version
+        {
+            get
+            {
+                object value;
+                _data.TryGetValue("sVersion", out value);
+
+                return value as String;
+            }
+            set { _data["sVersion"] = value; }
+        }
 
 		#endregion
 
@@ -227,7 +251,8 @@ namespace BlazeRegulator.Core.Data
 			set { _data["bFirstPlayerInfo"] = value; }
 		}
 
-		#endregion
+
+	    #endregion
 
 		#region Fields
 

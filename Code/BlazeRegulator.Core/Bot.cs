@@ -7,16 +7,23 @@
 namespace BlazeRegulator.Core
 {
 	using System;
+	using Extensibility;
 
-	public static class Bot
+    public static class Bot
 	{
 		private static readonly PluginManager plugins = new PluginManager();
+        private static readonly DependencyResolver container = new DependencyResolver();
 
+        public static DependencyResolver Dependencies
+        {
+            get { return container; }
+        }
+        
 		public static PluginManager Plugins
 		{
 			get { return plugins; }
 		}
-
+        
 		/// <summary>
 		/// Gets a string value representing the version of the bot.
 		/// </summary>
@@ -25,9 +32,9 @@ namespace BlazeRegulator.Core
 			get { return "2.0"; }
 		}
 
-	    public static int VersionInt32
+	    public static double VersionAsDouble
 	    { // 2.0.0.0 => 2000
-	        get { return 2000; }
+	        get { return 2000.0; }
 	    }
 	}
 }

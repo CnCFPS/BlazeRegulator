@@ -8,7 +8,7 @@ namespace BlazeRegulator.Core.Linq
 {
 	using System;
 
-	public static class EventHelpers
+    public static class EventHelpers
 	{
 		public static void Raise<TArg>(this Action<TArg> source, TArg arg0)
 		{

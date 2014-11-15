@@ -6,9 +6,9 @@
 
 namespace BlazeRegulator.Core.Data
 {
-	using Net;
+    // TODO: This class should be moved to a new plugin called "APB" or something.
 
-	public class APathBeyondTeamHandler : RenegadeTeamHandler
+    public class APathBeyondTeamHandler : RenegadeTeamHandler
 	{
 		#region Overrides of RenegadeTeamHandler
 

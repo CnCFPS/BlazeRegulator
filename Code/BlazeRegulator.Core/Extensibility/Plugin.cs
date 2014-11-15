@@ -7,16 +7,11 @@
 namespace BlazeRegulator.Core.Extensibility
 {
 	using System;
-	using System.Collections.Concurrent;
-	using System.Collections.Generic;
 	using System.ComponentModel.Composition;
 
 	[InheritedExport("Plugin", typeof(Plugin))]
 	public abstract class Plugin
 	{
-	    private readonly IDictionary<Type, object> registeredTypes = new ConcurrentDictionary<Type, object>();
-	    private readonly IDictionary<Type, Func<object>> objectCreation = new Dictionary<Type, Func<object>>(); 
-
 		#region Properties
 
 		public abstract String Author { get; }
@@ -37,24 +32,14 @@ namespace BlazeRegulator.Core.Extensibility
 		#region Methods
 
         /// <summary>
-        /// Gets an instance stored in the local IoC container.
+        /// Gets an instance stored in the dependency resolver.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
 	    public T Get<T>() where T : class
-	    {
-	        var type = typeof (T);
-	        object value;
-	        registeredTypes.TryGetValue(type, out value);
-
-	        Func<object> create;
-            if (value == null && objectCreation.TryGetValue(type, out create))
-            {
-                registeredTypes[type] = (value = create());
-            }
-
-	        return value as T;
-	    }
+        {
+            return Bot.Dependencies.Resolve<T>();
+        }
 
 	    /// <summary>
 		/// Called when the plugin loads.
@@ -76,10 +61,7 @@ namespace BlazeRegulator.Core.Extensibility
         /// <param name="instance"></param>
         protected void Set<T>(T instance) where T : class
         {
-            if (!registeredTypes.ContainsKey(typeof(T)))
-            {
-                registeredTypes[typeof(T)] = instance;
-            }
+            Bot.Dependencies.Register(instance);
         }
 
         /// <summary>
@@ -89,16 +71,7 @@ namespace BlazeRegulator.Core.Extensibility
         /// <param name="create"></param>
         protected void Set<T>(Func<T> create) where T : class
         {
-            var type = typeof(T);
-            if (!registeredTypes.ContainsKey(type))
-            {
-                registeredTypes[type] = null;
-            }
-
-            if (create != null && !objectCreation.ContainsKey(type))
-            {
-                objectCreation[type] = create;
-            }
+            Bot.Dependencies.Register<T>(create);
         }
 
 		/// <summary>

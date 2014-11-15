@@ -34,6 +34,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Atlantis.4.1.0-alpha\lib\net451\Atlantis.dll</HintPath>
     </Reference>
+    <Reference Include="Atlantis.Net.Irc">
+      <HintPath>..\packages\Atlantis.Net.Irc.4.1.2-alpha\lib\net451\Atlantis.Net.Irc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
@@ -50,8 +53,10 @@
     <Compile Include="Data\APathBeyondTeamHandler.cs" />
     <Compile Include="Data\ColorCode.cs" />
     <Compile Include="Data\ControlCode.cs" />
+    <Compile Include="Data\LevelLoadedEventArgs.cs" />
     <Compile Include="Data\RenegadeTeamHandler.cs" />
     <Compile Include="Data\GameOverEventArgs.cs" />
+    <Compile Include="IoCContainer.cs" />
     <Compile Include="Linq\EnumEx.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameEventManager.cs" />
@@ -63,13 +68,17 @@
     <Compile Include="Data\PlayerLeaveEventArgs.cs" />
     <Compile Include="Data\PlayerTeamChangedEventArgs.cs" />
     <Compile Include="Linq\EventHelpers.cs" />
+    <Compile Include="Net\Irc\IRC.cs" />
+    <Compile Include="Net\Irc\IrcChannel.cs" />
+    <Compile Include="Net\Irc\IrcChannelType.cs" />
+    <Compile Include="Net\Irc\IrcSettings.cs" />
     <Compile Include="Net\RenLogClient.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Net\RenRemComm.cs" />
     <Compile Include="Net\Remote.cs" />
     <Compile Include="Data\Player.cs" />
-    <Compile Include="PluginManager.cs" />
+    <Compile Include="Extensibility\PluginManager.cs" />
     <Compile Include="Extensibility\Plugin.cs" />
     <Compile Include="Extensibility\PluginType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

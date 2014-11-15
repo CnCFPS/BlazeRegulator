@@ -1,16 +1,17 @@
 // -----------------------------------------------------------------------------
-//  <copyright file="CommandResponse.cs" company="Zack Loveless">
+//  <copyright file="ReplyType.cs" company="Zack Loveless">
 //      Copyright (c) Zack Loveless.  All rights reserved.
 //  </copyright>
 // -----------------------------------------------------------------------------
 
 namespace BlazeRegulator.Core.Commands
 {
-    using System;
-
-    public static class CommandResponse
+    /// <summary>
+    /// Represents an enumeration defining how replies will be handled.
+    /// </summary>
+    public enum ReplyType
     {
-        public static readonly String AccessDenied = "Access denied.";
-        public static readonly String NotEnoughParams = "Insufficient parameters.";
+        Public = 0,
+        Private,
     }
 }

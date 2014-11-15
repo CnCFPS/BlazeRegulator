@@ -10,12 +10,25 @@ namespace BlazeRegulator.Core.Commands
 
     public abstract class CommandSource
     {
-        public abstract String Name { get; }
+        protected String _source;
 
-        public abstract void Respond(String format, params object[] args);
+        protected CommandSource(String source)
+        {
+            _source = source;
+        }
 
-        public abstract void Respond(String response);
+        #region Methods
 
+        /// <summary>
+        /// Responds to the specified source with the specified message.
+        /// </summary>
+        /// <param name="reply"></param>
+        /// <param name="format"></param>
+        /// <param name="args"></param>
+        public abstract void Respond(ReplyType reply, String format, params object[] args);
+        
+        #endregion
+        
         #region Overrides of Object
 
         /// <summary>
@@ -26,7 +39,7 @@ namespace BlazeRegulator.Core.Commands
         /// </returns>
         public override string ToString()
         {
-            return Name;
+            return _source;
         }
 
         #endregion
