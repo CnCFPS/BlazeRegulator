@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Commands CommandTrigger="!">
+  <Level>
+    <!--
+      This section is similar to how BRenBot does it,
+      but no ingame permissions are stored here. This section
+      is only for IRC permissions.
+    -->
+    <Permission Level="1">
+      <usergroup>irc_normal</usergroup>
+      <usergroup>irc_voice</usergroup>
+      <usergroup>irc_halfop</usergroup>
+      <usergroup>irc_op</usergroup>
+      <usergroup>irc_protected</usergroup>
+      <usergroup>irc_founder</usergroup>
+    </Permission>
+
+    <Permission Level="2">
+      <usergroup>irc_voice</usergroup>
+      <usergroup>irc_halfop</usergroup>
+      <usergroup>irc_op</usergroup>
+      <usergroup>irc_protected</usergroup>
+      <usergroup>irc_founder</usergroup>
+    </Permission>
+
+    <Permission Level="3">
+      <usergroup>irc_halfop</usergroup>
+      <usergroup>irc_op</usergroup>
+      <usergroup>irc_protected</usergroup>
+      <usergroup>irc_founder</usergroup>
+    </Permission>
+
+    <Permission Level="4">
+      <usergroup>irc_op</usergroup>
+      <usergroup>irc_protected</usergroup>
+      <usergroup>irc_founder</usergroup>
+    </Permission>
+
+    <Permission Level="5">
+      <usergroup>irc_protected</usergroup>
+      <usergroup>irc_founder</usergroup>
+    </Permission>
+
+    <Permission Level="6">
+      <usergroup>irc_founder</usergroup>
+    </Permission>
+  </Level>
+  
+  <Command Name="test" Enabled="false" Permission="1">
+    <Groups>
+      <Group>ingame</Group>
+      <Group>irc</Group>
+    </Groups>
+    <Aliases>
+      <Alias>foo</Alias>
+    </Aliases>
+  </Command>
+
+  <Command Name="hostmsg" Enabled="true" Permission="2">
+    <Groups>
+      <Group>irc</Group>
+    </Groups>
+    <Aliases>
+      <Alias>msg</Alias>
+    </Aliases>
+  </Command>
+
+  <Command Name="gameinfo" Enabled="true" Permission="1">
+    <Groups>
+      <Group>irc</Group>
+    </Groups>
+    <Aliases>
+      <Alias>gi</Alias>
+    </Aliases>
+  </Command>
+  
+  <Command Name="playerlist" Enabled="true" Permission="1">
+    <Groups>
+      <Group>irc</Group>
+    </Groups>
+    <Aliases>
+      <Alias>pl</Alias>
+      <Alias>players</Alias>
+    </Aliases>
+  </Command>
+
+  <Command Name="playerinfo" Enabled="true" Permission="2">
+    <Groups>
+      <Group>irc</Group>
+    </Groups>
+    <Aliases>
+      <Alias>pi</Alias>
+    </Aliases>
+  </Command>
+</Commands>

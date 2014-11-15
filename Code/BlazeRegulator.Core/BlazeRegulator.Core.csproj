@@ -48,15 +48,15 @@
     <Compile Include="Commands\CommandHandler.cs" />
     <Compile Include="Commands\CommandManager.cs" />
     <Compile Include="Commands\ChatCommandFilter.cs" />
-    <Compile Include="Commands\CommandResponse.cs" />
     <Compile Include="Commands\CommandSource.cs" />
+    <Compile Include="Commands\ReplyType.cs" />
     <Compile Include="Data\APathBeyondTeamHandler.cs" />
     <Compile Include="Data\ColorCode.cs" />
     <Compile Include="Data\ControlCode.cs" />
     <Compile Include="Data\LevelLoadedEventArgs.cs" />
     <Compile Include="Data\RenegadeTeamHandler.cs" />
     <Compile Include="Data\GameOverEventArgs.cs" />
-    <Compile Include="IoCContainer.cs" />
+    <Compile Include="Extensibility\DependencyResolver.cs" />
     <Compile Include="Linq\EnumEx.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameEventManager.cs" />
@@ -68,6 +68,7 @@
     <Compile Include="Data\PlayerLeaveEventArgs.cs" />
     <Compile Include="Data\PlayerTeamChangedEventArgs.cs" />
     <Compile Include="Linq\EventHelpers.cs" />
+    <Compile Include="Linq\StringInjectExtension.cs" />
     <Compile Include="Net\Irc\IRC.cs" />
     <Compile Include="Net\Irc\IrcChannel.cs" />
     <Compile Include="Net\Irc\IrcChannelType.cs" />

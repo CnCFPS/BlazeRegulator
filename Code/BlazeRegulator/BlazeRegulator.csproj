@@ -66,9 +66,15 @@
     <Content Include="Config\IRCSettings.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Defaults\IRCSettings.xml" />
+    <Content Include="Defaults\Commands.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Defaults\IRCSettings.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Defaults\Settings.xml">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Config\Moderators.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
