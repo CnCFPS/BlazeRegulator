@@ -4,7 +4,7 @@
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-namespace BrIrc.CommandHandlers
+namespace IrcRelay.CommandHandlers
 {
     using System;
     using System.Linq;
@@ -31,8 +31,8 @@ namespace BrIrc.CommandHandlers
             var team0 = new StringBuilder();
             var team1 = new StringBuilder();
 
-            var team0Players = Game.Players.Count(x => x.Team == 0);
-            var team1Players = Game.Players.Count(x => x.Team == 1);
+            var team0Players = Game.Players.Count(x => x.IsInGame && x.Team == 0);
+            var team1Players = Game.Players.Count(x => x.IsInGame && x.Team == 1);
 
             team0.AppendFormat("{0}{1}{2}: {3} players {4} points{0}",
                 (char)3,
@@ -52,7 +52,7 @@ namespace BrIrc.CommandHandlers
                 ? "WOL"
                 : "GameMode not set";
 
-            source.Respond("{1}{0}15GameInfo:{1} ({0}06{2}{0}15){0}11 Map: {3}{0} {4} {5}",
+            source.Respond(ReplyType.Public, "{1}{0}15GameInfo:{1} ({0}06{2}{0}15){0}11 Map: {3}{0} {4} {5}",
                 (char)3,
                 (char)2,
                 gameMode,

@@ -4,16 +4,15 @@
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-namespace BrIrc
+namespace IrcRelay
 {
     using BlazeRegulator.Core.Extensibility;
-    using BlazeRegulator.Core.IO;
-    using CommandHandlers;
+    using BlazeRegulator.Core.Net.Irc;
 
     public class IrcPlugin : Plugin
     {
-        private IrcSettings settings;
-        private IRC irc;
+        private IRC _irc;
+        private EventRelay _relay;
 
         #region Properties
 
@@ -52,27 +51,21 @@ namespace BrIrc
         /// <returns></returns>
         public override bool Initialize()
         {
-            settings = SettingsManager.LoadSettingsFrom<IrcSettings>("IRCSettings.xml");
+            _irc = Get<IRC>();
+            _relay = new EventRelay();
+            _relay.Initialize(_irc);
 
-            var localIrc = new IRC();
-            localIrc.Initialize(settings);
-            localIrc.Start();
-
-            irc = localIrc;
-            Set(localIrc); // other plugins may want to use the IRC instance.
-
-            RegisterCommands();
-
-            EventMessenger.Instance.Initialize(localIrc);
             return true;
         }
 
         private void RegisterCommands()
         {
-            //irc.RegisterChatCommand(new ICTestHandler());
-            irc.RegisterChatCommand(new ICMessageHandler());
-            irc.RegisterChatCommand(new ICGameInfoHandler());
-            irc.RegisterChatCommand(new ICPlayerListHandler());
+            /*
+            //_irc.RegisterChatCommand(new ICTestHandler());
+            _irc.RegisterChatCommand(new ICMessageHandler());
+            _irc.RegisterChatCommand(new ICGameInfoHandler());
+            _irc.RegisterChatCommand(new ICPlayerListHandler());
+            _irc.RegisterChatCommand(new ICPlayerInfoHandler());*/
         }
 
         /// <summary>
@@ -81,7 +74,6 @@ namespace BrIrc
         /// <returns></returns>
         public override bool Unload()
         {
-            irc.Shutdown();
             return true;
         }
 

@@ -1,34 +1,31 @@
 ﻿// -----------------------------------------------------------------------------
-//  <copyright file="EventMessenger.cs" company="Zack Loveless">
+//  <copyright file="EventRelay.cs" company="Zack Loveless">
 //      Copyright (c) Zack Loveless.  All rights reserved.
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-namespace BrIrc
+namespace IrcRelay
 {
     using System;
     using Atlantis.Linq;
     using BlazeRegulator.Core;
     using BlazeRegulator.Core.Data;
+    using BlazeRegulator.Core.Net.Irc;
 
-    public class EventMessenger
+    public class EventRelay
     {
-        private static EventMessenger instance;
-
-        public static EventMessenger Instance
-        {
-            get { return instance ?? (instance = new EventMessenger()); }
-        }
-
         private IRC _irc;
 
-        private EventMessenger()
+        internal EventRelay()
         {
             Game.Events.UnhandledLogReceivedEvent += OnLog;
 
             Game.Events.PlayerJoinEvent += OnPlayerJoin;
             Game.Events.PlayerLeaveEvent += OnPlayerLeave;
             Game.Events.ChatEvent += OnChat;
+
+            Game.Events.LevelLoadingEvent += OnLevelLoading;
+            Game.Events.LevelLoadedEvent += OnLevelLoaded;
 
             Game.Events.GameOverEvent += OnGameOver;
         }
@@ -91,6 +88,16 @@ namespace BrIrc
                 e.WinCondition,
                 winnerScore,
                 loserScore);
+        }
+
+        private void OnLevelLoaded(object sender, LevelLoadedEventArgs e)
+        {
+            _irc.Broadcast("B", "{0}07Level loaded OK{0}", (char)3);
+        }
+
+        private void OnLevelLoading(object sender, LevelLoadingEventArgs e)
+        {
+            _irc.Broadcast("B", "{0}07Loading level {1}{0}", (char)3, e.MapName);
         }
 
         private void OnLog(object sender, LogEventArgs e)

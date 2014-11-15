@@ -4,7 +4,7 @@
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-namespace BrIrc.CommandHandlers
+namespace IrcRelay.CommandHandlers
 {
     using BlazeRegulator.Core.Commands;
     using BlazeRegulator.Core.Net;

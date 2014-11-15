@@ -4,7 +4,7 @@
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-namespace BrIrc.CommandHandlers
+namespace IrcRelay.CommandHandlers
 {
     using System;
     using BlazeRegulator.Core.Commands;
@@ -24,7 +24,7 @@ namespace BrIrc.CommandHandlers
 
         public override void Handle(CommandSource source, String parameters)
         {
-            source.Respond("Test command triggered. Source: {0} - Parameters: {1}", source, parameters);
+            source.Respond(ReplyType.Public, "Test command triggered. Source: {0} - Parameters: {1}", source, parameters);
         }
 
         #endregion

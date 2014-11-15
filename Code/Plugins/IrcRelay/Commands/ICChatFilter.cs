@@ -4,7 +4,7 @@
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-namespace BrIrc.Commands
+namespace IrcRelay.Commands
 {
     using System;
     using System.Diagnostics;
@@ -123,14 +123,14 @@ namespace BrIrc.Commands
                         }
                         else
                         { // Access denied.
-                            source.Respond("{0} is not available for {1}",
+                            source.Respond(ReplyType.Public, "{0} is not available for {1}",
                                 cmd.Name,
                                 TranslatePrefixString(PrefixToString(prefix)));
                         }
                     }
                     else if (cmd != null && !cmd.CanExecuteInIRC)
                     {
-                        source.Respond("{0} cannot be executed via IRC.", cmd.Name);
+                        source.Respond(ReplyType.Public, "{0} cannot be executed via IRC.", cmd.Name);
                     }
                 }
             }
@@ -163,7 +163,7 @@ namespace BrIrc.Commands
                 }
                 else
                 {
-                    source.Respond(CommandResponse.NotEnoughParams);
+                    source.Respond(ReplyType.Public, CommandResponse.NotEnoughParams);
                 }
             }
         }
